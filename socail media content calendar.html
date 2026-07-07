@@ -1,0 +1,580 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --pink-50:#fff0f3;
+  --pink-100:#ffd6e0;
+  --pink-200:#ffb3c6;
+  --pink-400:#f472a0;
+  --pink-600:#c2185b;
+  --gray-50:#f7f7f8;
+  --gray-100:#eeeeef;
+  --gray-200:#d8d8da;
+  --gray-400:#9a9a9e;
+  --gray-600:#5c5c60;
+  --gray-900:#1a1a1c;
+  --white:#ffffff;
+}
+
+body{font-family:'Georgia',serif;background:var(--pink-50)}
+
+.w{max-width:680px;margin:0 auto;padding:2rem 0 3rem}
+
+.hdr{padding-bottom:1.5rem;margin-bottom:1.75rem;border-bottom:1px solid var(--pink-100)}
+.eyebrow{font-family:'Georgia',serif;font-style:italic;font-size:12px;letter-spacing:.05em;color:var(--pink-400);margin-bottom:.6rem}
+.ht{font-family:'Georgia',serif;font-size:22px;font-weight:400;color:var(--gray-900);line-height:1.3}
+.hs{font-size:13px;color:var(--gray-400);margin-top:.35rem;font-family:system-ui,sans-serif;letter-spacing:.01em}
+
+.stats{display:flex;gap:1px;margin-bottom:1.75rem;background:var(--pink-100);border-radius:10px;overflow:hidden}
+.stat{flex:1;background:var(--white);padding:.65rem .5rem;text-align:center}
+.stat:first-child{border-radius:10px 0 0 10px}
+.stat:last-child{border-radius:0 10px 10px 0}
+.stat-n{font-size:18px;font-weight:400;color:var(--gray-900);font-family:'Georgia',serif}
+.stat-l{font-size:10px;color:var(--gray-400);letter-spacing:.04em;font-family:system-ui,sans-serif;margin-top:1px}
+
+.frow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.75rem}
+.fb{font-family:system-ui,sans-serif;font-size:11px;padding:5px 13px;border-radius:20px;border:1px solid var(--gray-200);cursor:pointer;background:var(--white);color:var(--gray-600);letter-spacing:.02em;transition:all .15s}
+.fb:hover{border-color:var(--pink-200);color:var(--pink-600)}
+.fb.on{background:var(--pink-100);border-color:var(--pink-200);color:var(--pink-600);font-weight:500}
+
+.grid{display:flex;flex-direction:column;gap:8px}
+
+.card{background:var(--white);border:1px solid var(--gray-100);border-radius:12px;overflow:hidden;cursor:pointer;transition:border-color .2s,box-shadow .2s}
+.card:hover{border-color:var(--pink-200)}
+.card.open{border-color:var(--pink-200)}
+
+.ch{display:flex;align-items:center;gap:12px;padding:14px 16px}
+.cn{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-family:system-ui,sans-serif;flex-shrink:0;background:var(--pink-50);color:var(--pink-600);border:1px solid var(--pink-100)}
+.card.open .cn{background:var(--pink-100)}
+.cm{flex:1;min-width:0}
+.cr{display:flex;align-items:center;gap:6px;margin-bottom:3px}
+.pb{font-size:10px;font-family:system-ui,sans-serif;letter-spacing:.04em;padding:2px 8px;border-radius:20px;font-weight:500}
+.at{font-size:11px;color:var(--gray-400);font-family:system-ui,sans-serif}
+.hk{font-size:13px;color:var(--gray-900);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:'Georgia',serif;font-style:italic;line-height:1.4}
+.cv{font-size:16px;color:var(--gray-200);transition:transform .2s;flex-shrink:0}
+.card.open .cv{transform:rotate(180deg);color:var(--pink-400)}
+
+.body{display:none;padding:0 16px 18px;margin:0 16px;border-top:1px solid var(--gray-100)}
+.card.open .body{display:block}
+
+.sl{font-size:10px;font-family:system-ui,sans-serif;letter-spacing:.08em;color:var(--pink-400);margin:14px 0 6px;text-transform:uppercase}
+.cap{background:var(--gray-50);border-radius:8px;padding:13px 14px;font-size:13px;line-height:1.75;color:var(--gray-900);white-space:pre-line;font-family:'Georgia',serif}
+.tags{margin-top:8px;display:flex;flex-wrap:wrap;gap:5px}
+.tag{font-size:11px;color:var(--pink-600);background:var(--pink-50);border:1px solid var(--pink-100);border-radius:20px;padding:2px 9px;font-family:system-ui,sans-serif}
+.vis{background:var(--pink-50);border-left:2px solid var(--pink-200);border-radius:0;padding:10px 13px;font-size:12px;color:var(--gray-600);line-height:1.6;margin-top:5px;font-family:system-ui,sans-serif}
+.ytn{background:var(--gray-50);border-radius:8px;padding:10px 13px;font-size:12px;color:var(--gray-600);margin-top:6px;line-height:1.6;font-family:system-ui,sans-serif;border:1px solid var(--gray-100)}
+.ytn-label{font-size:10px;letter-spacing:.06em;color:var(--gray-400);text-transform:uppercase;margin-bottom:3px}
+
+.cpb{margin-top:10px;font-size:11px;padding:5px 13px;border-radius:20px;border:1px solid var(--gray-200);background:var(--white);color:var(--gray-600);cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-family:system-ui,sans-serif;letter-spacing:.02em;transition:all .15s}
+.cpb:hover{border-color:var(--pink-200);color:var(--pink-600)}
+.cpb.ok{color:var(--pink-600);border-color:var(--pink-200);background:var(--pink-50)}
+
+.divider{height:1px;background:var(--pink-100);margin:1.75rem 0}
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:1.5rem}
+.li{font-size:11px;color:var(--gray-400);display:flex;align-items:center;gap:5px;font-family:system-ui,sans-serif}
+.ld{width:8px;height:8px;border-radius:50%}
+</style>
+
+<div class="w">
+
+<div class="hdr">
+  <div class="eyebrow">Social media content calendar</div>
+  <div class="ht">TechNext Asia — F&B and Hospitality</div>
+  <div class="hs">25 posts &nbsp;·&nbsp; TikTok &nbsp;·&nbsp; Facebook &nbsp;·&nbsp; LinkedIn &nbsp;·&nbsp; YouTube &nbsp;·&nbsp; Instagram</div>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="stat-n">5</div><div class="stat-l">platforms</div></div>
+  <div class="stat"><div class="stat-n">25</div><div class="stat-l">posts</div></div>
+  <div class="stat"><div class="stat-n">5</div><div class="stat-l">per platform</div></div>
+  <div class="stat"><div class="stat-n">5</div><div class="stat-l">angles</div></div>
+</div>
+
+<div class="legend">
+  <div class="li"><div class="ld" style="background:#f87171"></div>The Problem</div>
+  <div class="li"><div class="ld" style="background:#60a5fa"></div>How We Help</div>
+  <div class="li"><div class="ld" style="background:#fbbf24"></div>Why Mgmt Matters</div>
+  <div class="li"><div class="ld" style="background:#34d399"></div>Proof / Authority</div>
+  <div class="li"><div class="ld" style="background:#c084fc"></div>Call to Action</div>
+</div>
+
+<div class="frow" id="frow">
+  <button class="fb on" data-f="all">All 25</button>
+  <button class="fb" data-f="TikTok">TikTok</button>
+  <button class="fb" data-f="Facebook">Facebook</button>
+  <button class="fb" data-f="LinkedIn">LinkedIn</button>
+  <button class="fb" data-f="YouTube">YouTube</button>
+  <button class="fb" data-f="Instagram">Instagram</button>
+  <button class="fb" data-f="Problem">Problem</button>
+  <button class="fb" data-f="Help">How We Help</button>
+  <button class="fb" data-f="Mgmt">Why Mgmt Matters</button>
+  <button class="fb" data-f="Proof">Proof</button>
+  <button class="fb" data-f="CTA">Call to Action</button>
+</div>
+
+<div class="grid" id="grid"></div>
+
+</div>
+
+<script>
+const AL={Problem:'The Problem',Help:'How We Help',Mgmt:'Why Mgmt Matters',Proof:'Proof / Authority',CTA:'Call to Action'};
+const ADOT={Problem:'#f87171',Help:'#60a5fa',Mgmt:'#fbbf24',Proof:'#34d399',CTA:'#c084fc'};
+const PC={
+  TikTok:{bg:'#fce7f3',cl:'#9d174d'},
+  Facebook:{bg:'#dbeafe',cl:'#1e40af'},
+  LinkedIn:{bg:'#e0e7ff',cl:'#3730a3'},
+  YouTube:{bg:'#fee2e2',cl:'#991b1b'},
+  Instagram:{bg:'#fef3c7',cl:'#92400e'}
+};
+
+const D=[
+{id:1,pl:'TikTok',an:'Problem',hk:'POV: Friday night rush and your inventory just said zero — but you don\'t know if that\'s real.',
+cap:`POV: It's Friday night rush. The system says zero stock. You're not sure if it's real.
+
+Your team is calling the warehouse. Your chef is improvising. Your guests are waiting.
+
+This is what happens when inventory lives in a spreadsheet nobody updates in real time.
+
+TechNext Asia connects your kitchen, stock, and orders in one live system — so your team always knows what's actually available.
+
+No more Friday night panic.
+
+Book a free demo at technext.asia.`,
+tags:['#RestaurantProblems','#FnBTech','#InventoryManagement','#KitchenLife','#AIAutomation'],
+vis:'POV kitchen shot — chef checks tablet, sees "0 stock" warning. Quick cut to TechNext Odoo dashboard showing real-time green stock indicators. Text overlays, trending audio. 30–45 seconds.',yt:null},
+
+{id:2,pl:'TikTok',an:'Help',hk:'What if your hotel answered every guest question without a single staff member picking up the phone?',
+cap:`What if your hotel answered every guest question — without a single staff member picking up the phone?
+
+Room service hours. Late checkout. Pool schedule. Spa availability.
+
+TechNext Asia builds AI chatbots trained on YOUR hotel's real data. Guests get instant answers. Staff focus on the experience, not the inbox.
+
+24/7. No extra headcount. Live in weeks.
+
+See it at technext.asia.`,
+tags:['#HotelTech','#GuestExperience','#AIChatbot','#HospitalityAutomation','#SmartHotel'],
+vis:'Split screen: left — hotel WhatsApp flooded with unanswered guest messages; right — AI chatbot responding instantly. Fast-paced edit, upbeat audio. 30–40 seconds.',yt:null},
+
+{id:3,pl:'TikTok',an:'Mgmt',hk:'The restaurants still open in 5 years all have one thing in common — and it\'s not the best food.',
+cap:`The restaurants still open in 5 years all have one thing in common.
+
+It's not the best food. It's not the best location.
+
+It's the best systems.
+
+Margins in F&B are razor thin. Waste, over-ordering, slow invoicing, and disconnected POS systems quietly eat your profit every single day.
+
+The winners automate what can be automated — and focus their energy on what actually matters.
+
+TechNext Asia. ERP and AI automation for F&B and hospitality.
+
+Book a free demo at technext.asia.`,
+tags:['#RestaurantManagement','#FoodBusiness','#FnBIndustry','#RestaurantOwner','#BusinessAutomation'],
+vis:'Talking-head TikTok with B-roll cutaways: operator speaks to camera, cut to busy restaurant, cut to clean Odoo dashboard on tablet. Subtitle text throughout. Warm documentary tone.',yt:null},
+
+{id:4,pl:'TikTok',an:'Proof',hk:'We built AI systems for Qualcomm and TSMC. Now we\'re bringing that same tech to your restaurant.',
+cap:`We've built AI and ERP systems for enterprises like Qualcomm and TSMC.
+
+Now we're bringing that same production-grade technology to F&B and hotel operators.
+
+11+ enterprise clients. 10+ countries. Certified Odoo Partner. Claude AI Partner.
+
+We don't do prototypes. We deploy real systems that run real businesses.
+
+Your restaurant or hotel deserves enterprise-grade operations.
+
+See what's possible at technext.asia.`,
+tags:['#TechNextAsia','#OdooPartner','#EnterpriseAI','#RestaurantTech','#HotelManagement'],
+vis:'Quick montage: world map showing 10+ countries, certification badges appearing one by one, ending on TechNext logo and URL. Bold text overlays, professional background music. 20–30 seconds.',yt:null},
+
+{id:5,pl:'TikTok',an:'CTA',hk:'What does your restaurant look like with zero manual data entry? Let us show you — for free.',
+cap:`What does your restaurant look like with zero manual data entry?
+
+No more reconciling spreadsheets. No more chasing invoices. No more stockouts nobody predicted.
+
+Just your team, focused on food and guests — while the system handles the rest.
+
+We offer a free strategy session for F&B and hotel operators. No sales pitch. Just a real look at what's possible for your business.
+
+Book yours at technext.asia.`,
+tags:['#FreeDemo','#RestaurantAutomation','#HospitalityTech','#OdooERP','#TechNextAsia'],
+vis:'Fast before/after TikTok: left — chaos (WhatsApp, Excel, sticky notes, stressed staff); right — calm Odoo dashboard, confident manager, happy guests. Split-screen. CTA text card at the end.',yt:null},
+
+{id:6,pl:'Facebook',an:'Problem',hk:'Your restaurant is leaking money every day — and the source might surprise you.',
+cap:`Your restaurant is leaking money every day — and the source might surprise you.
+
+It's not food cost. It's not rent. It's the time your team spends on work a system should be doing automatically.
+
+Manual stock counts. WhatsApp supplier orders. Invoices typed into spreadsheets. POS data that never syncs with your accounts.
+
+Every hour spent on admin is an hour not spent on your guests or your team.
+
+TechNext Asia helps F&B operators stop the leak — with Odoo ERP and AI automation that connects every part of your operation.
+
+Book a free demo at technext.asia.`,
+tags:['#RestaurantManagement','#FnBIndustry','#OdooERP','#OperationsAutomation','#FoodAndBeverage'],
+vis:'Restaurant P&L graphic with a highlighted "hidden losses" row. Clean, data-forward design with TechNext branding.',yt:null},
+
+{id:7,pl:'Facebook',an:'Help',hk:'One system for reservations, housekeeping, billing, and guest communication. Yes, it exists.',
+cap:`One system for reservations, housekeeping, billing, and guest communication. Yes, it exists.
+
+TechNext Asia implements Odoo ERP for hotel operators — connecting every department into a single, live view of your operation.
+
+Front desk sees room status in real time. Housekeeping receives task updates automatically. Finance gets billing data the moment checkout is processed. Guests receive automated, personalised communication throughout their stay.
+
+No more calls between departments. No more billing errors. No more guests waiting while someone finds their folio.
+
+Live in weeks. Not months.
+
+Book a free demo at technext.asia.`,
+tags:['#HotelManagement','#HotelTech','#OdooERP','#HospitalityAutomation','#GuestExperience'],
+vis:'Workflow diagram: four connected nodes — Reservations, Housekeeping, Billing, Guest Comms — feeding into a central Odoo dashboard. TechNext brand colours.',yt:null},
+
+{id:8,pl:'Facebook',an:'Mgmt',hk:'Thin margins and high expectations. That\'s the F&B and hospitality industry in one sentence.',
+cap:`Thin margins and high expectations. That's the F&B and hospitality industry in one sentence.
+
+A 3-star review because housekeeping was late. A comp meal because the kitchen ran out. A walkout because check-in took 20 minutes.
+
+These aren't PR problems. They're operational failures — and they're preventable.
+
+When your systems are connected, your team doesn't improvise. They execute. Consistently. Every service. Every shift.
+
+TechNext Asia builds the operational backbone that lets your team focus on what hospitality is really about — the guest.
+
+Book a free demo at technext.asia.`,
+tags:['#HospitalityManagement','#RestaurantOps','#GuestExperience','#HotelOperations','#FnBLeadership'],
+vis:'Carousel: Slide 1 — operational chaos (missed booking, out-of-stock, unsynced data); Slide 2 — connected operations (live dashboard, automated alerts, happy guest); Final slide — TechNext CTA.',yt:null},
+
+{id:9,pl:'Facebook',an:'Proof',hk:'Certified. Battle-tested. Deployed in production across 10+ countries.',
+cap:`Certified. Battle-tested. Deployed in production across 10+ countries.
+
+TechNext Asia is a certified Odoo Partner and Claude AI Partner, with 11+ enterprise clients served — from global semiconductor companies to regional F&B groups.
+
+Every system we build goes live in production. No sandboxes. No prototypes. Real operations, running on day one.
+
+We bring the same rigour to restaurant and hotel operators that we bring to enterprise clients.
+
+If you're evaluating an ERP or AI partner for your F&B or hospitality business, talk to us.
+
+Book a free demo at technext.asia.`,
+tags:['#OdooPartner','#ClaudeAI','#CertifiedERP','#EnterpriseGrade','#TechNextAsia'],
+vis:'Trust-signal graphic: Odoo and Claude badges, world map with 10+ country markers, "11+ enterprise clients" stat. Clean, authoritative, dark background.',yt:null},
+
+{id:10,pl:'Facebook',an:'CTA',hk:'Free strategy session for F&B and hotel operators. No jargon. No pressure. Just clarity.',
+cap:`Free strategy session for F&B and hotel operators. No jargon. No pressure. Just clarity.
+
+We'll map your current operations, identify your biggest automation opportunities, and show you exactly what an integrated ERP or AI system looks like for your specific business.
+
+30 minutes. Completely free. We've done this for enterprises across 10+ countries — and we'd like to do it for you.
+
+Whether you're running one outlet or twenty, there's a version of this that works for your scale and budget.
+
+Book your free session at technext.asia.`,
+tags:['#FreeConsultation','#RestaurantTech','#HotelOperations','#OdooERP','#TechNextAsia'],
+vis:'Booking interface mockup: clean calendar graphic "30-min Free Strategy Session" with CTA button, overlaid on a soft restaurant interior photo. TechNext logo and URL.',yt:null},
+
+{id:11,pl:'LinkedIn',an:'Problem',hk:'Most F&B and hotel operators don\'t know how much manual processes cost them — until they run the numbers.',
+cap:`Most restaurant and hotel operators don't know how much manual processes are costing them — until they run the numbers.
+
+A mid-sized restaurant with 3 outlets might spend 15–20 hours per week on manual inventory counts, supplier coordination, and invoice reconciliation. At market labour rates, that's a significant monthly cost — before you factor in errors, stockouts, and delayed billing cycles.
+
+Disconnected systems compound the problem. When your POS doesn't talk to your inventory, and your inventory doesn't talk to your accounts, every decision is made on incomplete data.
+
+TechNext Asia implements Odoo ERP and AI automation that connects your entire operation — reducing manual admin by up to 80% and giving management real-time visibility across every function.
+
+The result isn't just efficiency. It's decision-making confidence.
+
+Book a free strategy session at technext.asia.`,
+tags:['#RestaurantManagement','#HotelOperations','#OperationalEfficiency','#OdooERP','#FnBIndustry'],
+vis:'LinkedIn infographic: "Where manual processes cost you" — three columns (Time, Money, Accuracy) with figures. Professional, shareable. TechNext logo in corner.',yt:null},
+
+{id:12,pl:'LinkedIn',an:'Help',hk:'AI agents that reorder stock. Chatbots that answer guests at 2am. ERP that connects every department.',
+cap:`AI agents that reorder stock automatically. Chatbots that answer guests at 2am. ERP that connects every department. This is what modern F&B and hospitality operations look like.
+
+At TechNext Asia, we build three layers of operational intelligence for restaurants and hotels:
+
+1. Odoo ERP — one unified system for inventory, purchasing, sales, HR, and finance.
+2. AI agents — automated workflows for order management, supplier coordination, and exception alerts.
+3. RAG-powered chatbots — trained on your SOPs and FAQs so guests and staff get accurate answers instantly.
+
+Deployed for enterprise clients across 10+ countries. Implementation takes weeks, not months. Everything runs in production from day one.
+
+Book a free demo at technext.asia.`,
+tags:['#AIAgents','#OdooERP','#RAGSystem','#HospitalityTech','#FoodAndBeverage'],
+vis:'Three-tier architecture diagram: Layer 1 — Odoo ERP; Layer 2 — AI Agents; Layer 3 — Chatbot/Guest Interface. Arrows showing data flow. TechNext brand palette.',yt:null},
+
+{id:13,pl:'LinkedIn',an:'Mgmt',hk:'In hospitality, management isn\'t a department. It\'s a competitive advantage.',
+cap:`In hospitality, management isn't a department. It's a competitive advantage.
+
+The properties and restaurants that consistently outperform competitors share one characteristic: their management team makes decisions based on real data, not gut feel or yesterday's report.
+
+When occupancy rates, food costs, guest satisfaction scores, and labour efficiency are all visible in one dashboard — in real time — GMs and owners can act on what's happening now, not react to what happened last week.
+
+Operational excellence in F&B and hospitality isn't about working harder. It's about having systems that turn data into decisions, and decisions into outcomes.
+
+TechNext Asia builds that infrastructure — with Odoo ERP and AI automation tailored to your operation.
+
+Book a free strategy session at technext.asia.`,
+tags:['#HospitalityLeadership','#HotelGM','#RestaurantManagement','#OperationalExcellence','#OdooERP'],
+vis:'LinkedIn dashboard graphic: key F&B KPIs — food cost %, table turn rate, occupancy, net revenue — all in green with upward trends. Headline: "Manage what matters. Automate the rest."',yt:null},
+
+{id:14,pl:'LinkedIn',an:'Proof',hk:'We\'ve implemented ERP and AI for Qualcomm and TSMC. Here\'s what that means for your restaurant or hotel.',
+cap:`We've implemented production ERP and AI systems for Qualcomm, TSMC, and 9+ other enterprise clients across 10+ countries. Here's what that means for your restaurant or hotel.
+
+It means every system we deploy has been stress-tested at enterprise scale — with the documentation, security standards, and change management processes to match.
+
+TechNext Asia is a certified Odoo Partner and Claude AI Partner. We don't sell software licences. We implement solutions — scoped to your workflows, trained on your data, supported through go-live and beyond.
+
+F&B and hospitality operators often assume this level of implementation is out of reach. It isn't. And it doesn't take months.
+
+Book a free demo at technext.asia.`,
+tags:['#CertifiedOdooPartner','#ClaudePartner','#ERPImplementation','#EnterpriseAI','#TechNextAsia'],
+vis:'Split LinkedIn graphic: left — enterprise logos and country pins; right — F&B/hotel imagery with overlay "The same systems. Your scale." TechNext logo and URL.',yt:null},
+
+{id:15,pl:'LinkedIn',an:'CTA',hk:'If your operation still runs on spreadsheets and WhatsApp groups, this 30-minute call could change that.',
+cap:`If your operation still runs on spreadsheets and WhatsApp groups, this 30-minute call could change that.
+
+TechNext Asia offers a free strategy session for F&B and hotel operators — no sales pressure, no jargon, no generic demo.
+
+In 30 minutes, we'll review your current systems, identify the three highest-impact automation opportunities for your specific operation, and give you a realistic picture of what implementation looks like — timeline, cost, and expected outcomes.
+
+We've done this across 10+ countries. We know what works at your scale.
+
+Book your free session at technext.asia.`,
+tags:['#FreeStrategySession','#RestaurantAutomation','#HotelTech','#OdooERP','#TechNextAsia'],
+vis:'Dark LinkedIn CTA graphic: left — "What you\'ll walk away with" (gap analysis, automation roadmap, implementation estimate); right — calendar icon and "Book your free 30-min session" with URL.',yt:null},
+
+{id:16,pl:'YouTube',an:'Problem',hk:'Why restaurants and hotels lose money without knowing it [Video title]',
+cap:`VIDEO TITLE:
+Why restaurants and hotels lose money without knowing it — the hidden cost of disconnected operations
+
+DESCRIPTION:
+In this video, we break down the three biggest operational money leaks in F&B and hotel management — and why most operators don't even know they're happening.
+
+We cover:
+• The real cost of manual inventory management
+• How disconnected POS and accounting systems create billing blind spots
+• Why slow order-to-invoice cycles hurt your cash flow
+
+TechNext Asia is a Singapore-based AI automation and Odoo ERP consultancy. 11+ enterprise clients. 10+ countries.
+
+Book a free strategy session: technext.asia
+
+Chapters:
+00:00 Introduction
+01:30 The manual process trap
+04:00 The disconnected systems problem
+07:30 Real cost breakdown
+10:00 What connected operations look like
+12:30 How TechNext Asia can help`,
+tags:['#RestaurantManagement','#HotelOperations','#ERPSystem','#FnBIndustry','#BusinessAutomation'],
+vis:'Thumbnail: bold text "Hidden Cost of Manual Ops" over split image — chaotic spreadsheets vs clean Odoo dashboard. Presenter face in corner. High-contrast, click-worthy.',
+yt:'Format: 12–15 min explainer. Open with a relatable operator pain-point story, transition into structured breakdown with screen-share Odoo demos, close with clear CTA. Add chapters to description.'},
+
+{id:17,pl:'YouTube',an:'Help',hk:'How we automate F&B and hotel operations — full Odoo ERP walkthrough [Video title]',
+cap:`VIDEO TITLE:
+How we automate F&B and hotel operations — a full Odoo ERP walkthrough for restaurants and hotels
+
+DESCRIPTION:
+Watch a real walkthrough of how TechNext Asia implements Odoo ERP and AI automation for Food & Beverage and hotel operators.
+
+In this demo we show:
+• Inventory management with AI-powered reorder alerts
+• Automated supplier purchase orders
+• Reservation and housekeeping workflow automation
+• Guest-facing AI chatbot for 24/7 enquiry handling
+• Unified billing from checkout to accounts
+
+TechNext Asia — certified Odoo Partner and Claude AI Partner. 11+ enterprise clients. 10+ countries.
+
+Book a free demo: technext.asia
+
+Chapters:
+00:00 Overview
+02:00 Inventory and procurement
+06:00 Reservations and housekeeping
+10:00 AI chatbot demo
+14:00 Billing and finance
+17:00 What implementation looks like`,
+tags:['#OdooERP','#OdooDemo','#RestaurantTech','#HotelAutomation','#AIForHospitality'],
+vis:'Thumbnail: Odoo dashboard screen recording with "FULL DEMO" badge in corner. Clean, software walkthrough aesthetic.',
+yt:'Format: 18–22 min product demo. Use real Odoo screen recordings with F&B/hotel-specific scenarios. Ideal for operators in evaluation mode who want to see the system before booking a call.'},
+
+{id:18,pl:'YouTube',an:'Mgmt',hk:'What separates profitable restaurants from struggling ones [Video title]',
+cap:`VIDEO TITLE:
+What separates profitable restaurants and hotels from struggling ones — the management systems behind the best operators
+
+DESCRIPTION:
+Why do some restaurants and hotels consistently outperform while others fight the same operational fires year after year? We look at the management systems, data habits, and automation decisions that separate the best operators from the rest.
+
+Topics covered:
+• Why gut-feel management fails at scale
+• The KPIs that actually predict F&B profitability
+• How connected systems change decision-making speed
+• The role of AI automation in modern hospitality management
+
+TechNext Asia — Singapore-based AI and Odoo ERP consultancy.
+
+Book a free session: technext.asia`,
+tags:['#HospitalityManagement','#RestaurantBusiness','#HotelManagement','#FnBLeadership','#OdooERP'],
+vis:'Thumbnail: presenter graphic with headline "The Systems Behind Profitable Restaurants" and a clean KPI dashboard in background. Credibility-forward, educational tone.',
+yt:'Format: 14–18 min thought-leadership video. Mix of talking-head and data visuals. No hard product sell — position TechNext as a knowledgeable partner.'},
+
+{id:19,pl:'YouTube',an:'Proof',hk:'From scoping to go-live — how a TechNext Asia implementation actually works [Video title]',
+cap:`VIDEO TITLE:
+From scoping to go-live — how TechNext Asia implements Odoo ERP for F&B and hotel operators
+
+DESCRIPTION:
+We walk through what a real TechNext Asia implementation looks like — from the first discovery call to go-live day.
+
+We cover:
+• How we scope and customise Odoo ERP for F&B and hospitality workflows
+• Our implementation timeline (weeks, not months)
+• What "production-only" deployment means and why it matters
+• How we train your team and support go-live
+• Client outcomes after implementation
+
+TechNext Asia — certified Odoo Partner, Claude AI Partner. 11+ enterprise clients across 10+ countries including Qualcomm and TSMC.
+
+Book a free session: technext.asia`,
+tags:['#OdooImplementation','#ERPDeployment','#OdooPartner','#TechNextAsia','#HospitalityTech'],
+vis:'Thumbnail: process timeline "Scoping → Build → Training → Go-Live" with TechNext logo. Clean, process-forward.',
+yt:'Format: 15–20 min case study/process video. Walk through the implementation journey with timeline diagrams, real screenshots, before/after metrics. Builds trust with operators evaluating vendors.'},
+
+{id:20,pl:'YouTube',an:'CTA',hk:'Watch this before booking a free demo with TechNext Asia [Video title]',
+cap:`VIDEO TITLE:
+Is your restaurant or hotel ready for AI automation? Watch this before booking a demo with us.
+
+DESCRIPTION:
+Before you book a free strategy session with TechNext Asia, watch this short video to understand what we do, who we work with, and what you'll get from the conversation.
+
+We cover:
+• What Odoo ERP and AI automation look like for F&B and hotel operators
+• What to expect from a TechNext Asia strategy session
+• Who this is a good fit for (and who it isn't)
+• How to prepare for the most useful 30 minutes about your operation
+
+TechNext Asia — certified Odoo Partner, Claude AI Partner, 11+ enterprise clients, 10+ countries.
+
+Book your session: technext.asia`,
+tags:['#BookADemo','#OdooERP','#RestaurantAutomation','#HotelTech','#TechNextAsia'],
+vis:'Thumbnail: friendly presenter image with text "Watch before booking your demo." Approachable, trust-building.',
+yt:'Format: 8–10 min pre-qualification video. Conversational, presenter to camera. Goal: qualify the right leads and set expectations. Pin this as a featured video on your channel.'},
+
+{id:21,pl:'Instagram',an:'Problem',hk:'The most expensive thing in your restaurant isn\'t rent or food cost. It\'s the time nobody\'s tracking.',
+cap:`The most expensive thing in your restaurant isn't rent or food cost. It's the time nobody's tracking.
+
+Every manual stock count. Every supplier call. Every invoice built from scratch.
+
+That's your team's time — and it adds up fast.
+
+TechNext Asia automates the admin so your team focuses on service.
+
+Book a free demo at technext.asia.`,
+tags:['#RestaurantOwner','#FnBTech','#RestaurantLife','#AIAutomation','#OdooERP'],
+vis:'Editorial Reel or carousel: close-up of a notebook with handwritten stock tallies, swipe to a clean Odoo mobile dashboard. Minimal text overlay. Dark, premium aesthetic.',yt:null},
+
+{id:22,pl:'Instagram',an:'Help',hk:'Your guests are checking in. Your AI is already answering their questions.',
+cap:`Your guests are checking in. Your AI is already answering their questions.
+
+Spa hours, room service, restaurant reservations, late checkout — all handled automatically before they even reach the front desk.
+
+TechNext Asia builds AI chatbots trained on your hotel's real data.
+
+Better guest experience. Less pressure on your team.
+
+Book a free demo at technext.asia.`,
+tags:['#HotelTech','#GuestExperience','#AIChatbot','#SmartHotel','#HospitalityAutomation'],
+vis:'Phone mockup Reel: animated chat — guest asks hotel questions, AI responds instantly. Overlay: "24/7. Instant. Trained on your data."',yt:null},
+
+{id:23,pl:'Instagram',an:'Mgmt',hk:'Great hotels don\'t improvise. They execute — because their systems make excellence the default.',
+cap:`Great hotels don't improvise. They execute — because their systems make excellence the default.
+
+Housekeeping synced. Billing automated. Guest comms personalised. Reservations connected.
+
+When everything works together, your team delivers consistently — even on the busiest nights.
+
+TechNext Asia connects your hotel's operations end to end.
+
+Book a free demo at technext.asia.`,
+tags:['#HotelManagement','#HospitalityLife','#SmartHotel','#HotelOps','#OdooERP'],
+vis:'Premium lifestyle carousel: Slide 1 — polished hotel lobby, confident staff; Slide 2 — Odoo housekeeping task board; Slide 3 — guest satisfaction metrics on tablet; Slide 4 — TechNext CTA.',yt:null},
+
+{id:24,pl:'Instagram',an:'Proof',hk:'Enterprise systems. Restaurant speed. Hotel precision.',
+cap:`Enterprise systems. Restaurant speed. Hotel precision.
+
+TechNext Asia is a certified Odoo Partner and Claude AI Partner — trusted by 11+ enterprise clients across 10+ countries.
+
+We bring that same standard to F&B and hotel operators.
+
+Production-only deployments. Live in weeks.
+
+See what's possible at technext.asia.`,
+tags:['#TechNextAsia','#OdooPartner','#EnterpriseGrade','#HotelTech','#RestaurantTech'],
+vis:'Bold typographic graphic: "Enterprise-grade. Restaurant-ready." on deep navy background. Odoo and Claude badges. TechNext logo. Minimal, confident.',yt:null},
+
+{id:25,pl:'Instagram',an:'CTA',hk:'Your peak season is coming. Is your system ready for it?',
+cap:`Your peak season is coming. Is your system ready for it?
+
+Inventory that reorders itself. Reservations that never double-book. Guests who get answers before they ask.
+
+That's what TechNext Asia builds — in weeks, not months.
+
+Book a free demo at technext.asia.`,
+tags:['#HospitalityTech','#RestaurantReady','#OdooERP','#AIForHospitality','#TechNextAsia'],
+vis:'Dynamic Reel: transition from chaotic pre-service scene to calm, organised operation post-automation. Overlay: "Peak season is coming. Your system should be ready." Final frame: TechNext logo + URL.',yt:null}
+];
+
+function pbadge(pl){
+  const c=PC[pl]||{bg:'#fce7f3',cl:'#9d174d'};
+  return`<span class="pb" style="background:${c.bg};color:${c.cl}">${pl}</span>`;
+}
+
+function render(f){
+  const g=document.getElementById('grid');
+  const list=f==='all'?D:D.filter(p=>p.pl===f||p.an===f);
+  g.innerHTML=list.map(p=>`
+<div class="card" data-id="${p.id}">
+  <div class="ch" onclick="tog(${p.id})">
+    <div class="cn">${p.id}</div>
+    <div class="cm">
+      <div class="cr">${pbadge(p.pl)}<span class="at">· ${AL[p.an]}</span>&nbsp;<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${ADOT[p.an]};vertical-align:middle"></span></div>
+      <div class="hk">${p.hk}</div>
+    </div>
+    <i class="ti ti-chevron-down cv" aria-hidden="true"></i>
+  </div>
+  <div class="body">
+    <div class="sl">${p.pl==='YouTube'?'Title + description':'Caption'}</div>
+    <div class="cap">${p.cap}</div>
+    <div class="tags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+    <button class="cpb" onclick="cp(event,${p.id})"><i class="ti ti-copy" aria-hidden="true"></i> Copy caption</button>
+    <div class="sl">Visual direction</div>
+    <div class="vis">${p.vis}</div>
+    ${p.yt?`<div class="ytn"><div class="ytn-label">Production note</div>${p.yt}</div>`:''}
+  </div>
+</div>`).join('');
+}
+
+function tog(id){document.querySelector(`[data-id="${id}"]`).classList.toggle('open')}
+
+function cp(e,id){
+  e.stopPropagation();
+  const p=D.find(x=>x.id===id);
+  navigator.clipboard.writeText(p.cap+'\n\n'+p.tags.join(' ')).catch(()=>{});
+  const b=e.currentTarget;
+  b.classList.add('ok');
+  b.innerHTML='<i class="ti ti-check" aria-hidden="true"></i> Copied!';
+  setTimeout(()=>{b.classList.remove('ok');b.innerHTML='<i class="ti ti-copy" aria-hidden="true"></i> Copy caption';},2000);
+}
+
+document.getElementById('frow').addEventListener('click',e=>{
+  if(!e.target.classList.contains('fb'))return;
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('on'));
+  e.target.classList.add('on');
+  render(e.target.dataset.f);
+});
+
+render('all');
+</script>
